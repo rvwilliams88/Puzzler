@@ -3,11 +3,10 @@
     x:Class="Puzzler.AppShell"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    xmlns:pages="clr-namespace:Puzzler.Pages"
+    xmlns:views="clr-namespace:Puzzler.Views"
     Shell.FlyoutBehavior="Disabled">
 
-    <ShellContent
-        ContentTemplate="{DataTemplate pages:HomePage}" />
+    <ShellContent ContentTemplate="{DataTemplate views:HomePage}" />
 
 </Shell>
 

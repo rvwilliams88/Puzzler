@@ -16,7 +16,7 @@ public class Tile
         CurrentPosition = DestinationPosition = point;
     }
 
-    public RectF Bounds => new RectF(CurrentPosition, Size);
+    public RectF Bounds => new(CurrentPosition, Size);
 
     public PointF CurrentPosition { get; set; }
 
@@ -49,7 +49,7 @@ public class Tile
 
         float imageOriginX = (x * Size.Width) - (this.DestinationPosition.X * Size.Width) + xOffset;
         float imageOriginY = (y * Size.Height) - (this.DestinationPosition.Y * Size.Height) + yOffset;
-
+        System.Diagnostics.Debug.WriteLine($"Drawing tile at {x},{y} from image origin {imageOriginX},{imageOriginY} size {imageSize.Width}x{imageSize.Height}");
         canvas.DrawImage(
             image,
             imageOriginX,

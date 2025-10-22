@@ -1,17 +1,17 @@
-﻿namespace Puzzler.Pages;
+﻿namespace Puzzler.Views;
 
 public partial class LevelSelectionPage : ContentPage
 {
-    private int childCount;
+    //private int childCount;
 
-    public LevelSelectionPage(Context context)
+    public LevelSelectionPage(/*Context context*/)
     {
         InitializeComponent();
 
-        LevelsCollectionView.ItemsSource = context.Levels;
+        //LevelsCollectionView.ItemsSource = context.Levels;
     }
 
-    private async void OnLevelsCollectionViewChildAdded(object sender, ElementEventArgs e)
+    /*private async void OnLevelsCollectionViewChildAdded(object sender, ElementEventArgs e)
     {
         if (e.Element is VisualElement visualElement)
         {
@@ -28,7 +28,8 @@ public partial class LevelSelectionPage : ContentPage
 
     private async void OnLevelsCollectionViewSelectionChanged(object sender, SelectionChangedEventArgs e)
     {
-        var level = e.CurrentSelection.FirstOrDefault();
+        // Use direct indexing instead of LINQ FirstOrDefault for indexable collections
+        var level = (e.CurrentSelection != null && e.CurrentSelection.Count > 0) ? e.CurrentSelection[0] : null;
 
         if (level is null)
         {
@@ -42,5 +43,5 @@ public partial class LevelSelectionPage : ContentPage
 
         // Clear the selection for when we navigate back nothing is selected.
         LevelsCollectionView.SelectedItem = null;
-    }
+    }*/
 }

@@ -1,16 +1,26 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage
+    x:Class="Puzzler.Views.LevelSelectionPage"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:behaviors="clr-namespace:Puzzler.Behaviors"
     xmlns:puzzler="clr-namespace:Puzzler"
-    x:Class="Puzzler.Pages.LevelSelectionPage">
+    xmlns:vm="clr-namespace:Puzzler.ViewModels"
+    x:DataType="vm:LevelSelectionPageViewModel">
+    <ContentPage.BindingContext>
+        <vm:LevelSelectionPageViewModel />
+    </ContentPage.BindingContext>
     <Grid>
         <CollectionView
             x:Name="LevelsCollectionView"
-            SelectionMode="Single"
-            SelectionChanged="OnLevelsCollectionViewSelectionChanged"
-            ChildAdded="OnLevelsCollectionViewChildAdded"
-            Margin="50">
+            Margin="50"
+            x:DataType="vm:LevelSelectionPageViewModel"
+            ItemsSource="{Binding Levels}"
+            SelectedItem="{Binding SelectedLevel, Mode=TwoWay}"
+            SelectionMode="Single">
+            <CollectionView.Behaviors>
+                <behaviors:ChildAddedBehavior ChildAddedCommand="{Binding ChildAddedCommand}" />
+            </CollectionView.Behaviors>
 
             <CollectionView.ItemsLayout>
                 <LinearItemsLayout ItemSpacing="20" Orientation="Vertical" />
@@ -18,30 +28,29 @@
 
             <CollectionView.ItemTemplate>
                 <DataTemplate x:DataType="puzzler:Level">
-                    <Border
-                        StrokeShape="RoundRectangle 8,8,8,8">
+                    <Border StrokeShape="RoundRectangle 8,8,8,8">
                         <Grid
                             ColumnDefinitions="100,*"
                             ColumnSpacing="10"
                             RowDefinitions="Auto,Auto,*">
                             <Label
-                                Text="{Binding Name}"
                                 Grid.Column="1"
-                                FontSize="Title" />
+                                FontSize="Title"
+                                Text="{Binding Name}" />
 
                             <Label
-                                Text="{Binding Difficulty}"
-                                Grid.Column="1"
                                 Grid.Row="1"
-                                FontSize="Subtitle" />
+                                Grid.Column="1"
+                                FontSize="Subtitle"
+                                Text="{Binding Difficulty}" />
 
                             <puzzler:SlidingTileGrid
-                                Level="{Binding}"
+                                HeightRequest="100"
                                 IsEnabled="False"
+                                Level="{Binding}"
                                 TileSpacing="2"
-                                Grid.RowSpan="3"
-                                WidthRequest="100"
-                                HeightRequest="100"/>
+                                WidthRequest="100" />
+
                         </Grid>
                     </Border>
                 </DataTemplate>

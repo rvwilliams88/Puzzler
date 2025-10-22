@@ -1,8 +1,13 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage
-    x:Class="Puzzler.Pages.HomePage"
+    x:Class="Puzzler.Views.HomePage"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml">
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:vm="clr-namespace:Puzzler.ViewModels"
+    x:DataType="vm:HomePageViewModel">
+    <ContentPage.BindingContext>
+        <vm:HomePageViewModel />
+    </ContentPage.BindingContext>
     <Grid RowDefinitions="*,*">
         <Label
             FontSize="80"
@@ -13,15 +18,16 @@
 
         <Button
             Grid.Row="1"
-            Clicked="OnPlayButtonClicked"
+            Command="{Binding PlayButtonClickedCommand}"
             HorizontalOptions="Center"
-            VerticalOptions="Start" >
+            VerticalOptions="Start">
             <Button.ImageSource>
                 <FontImageSource
-                    Glyph="&#xf1c8;"
                     FontFamily="Ionicons"
+                    Glyph="&#xf1c8;"
                     Size="44"
-                    Color="{AppThemeBinding Light={StaticResource Secondary}, Dark={StaticResource Primary}}"/>
+                    Color="{AppThemeBinding Light={StaticResource Secondary},
+                                            Dark={StaticResource Primary}}" />
             </Button.ImageSource>
         </Button>
     </Grid>

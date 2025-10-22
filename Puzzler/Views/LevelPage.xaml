@@ -1,0 +1,40 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="Puzzler.Views.LevelPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:local="clr-namespace:Puzzler"
+    xmlns:vm="clr-namespace:Puzzler.ViewModels"
+    xmlns:behaviors="clr-namespace:Puzzler.Behaviors"
+    x:DataType="vm:LevelPageViewModel">
+    <ContentPage.BindingContext>
+        <vm:LevelPageViewModel />
+    </ContentPage.BindingContext>
+    <Grid RowDefinitions="5,Auto,Auto,*">
+
+        <Label
+            x:Name="TitleLabel"
+            Grid.Row="1"
+            FontSize="Title"
+            HorizontalOptions="Center"
+            Text="{Binding Title}" />
+
+        <Label
+            x:Name="SubtitleLabel"
+            Grid.Row="2"
+            FontSize="Subtitle"
+            HorizontalOptions="Center"
+            Text="{Binding SubTitle}" />
+
+        <local:SlidingTileGrid
+            x:Name="SlidingTiles"
+            Grid.Row="3"
+            AreAnimationsEnabled="True"
+            IsEnabled="True"
+            CompletedCommand="{Binding SlidingTilesCompletedCommand}"
+            HorizontalOptions="Center"
+            Level="{Binding SlidingTilesLevel}"
+            VerticalOptions="Center">
+        </local:SlidingTileGrid>
+    </Grid>
+</ContentPage>

@@ -1,10 +1,19 @@
 ﻿using Microsoft.Maui.Graphics.Platform;
 using System.Reflection;
+using System.Windows.Input;
 
 namespace Puzzler;
 
 public partial class SlidingTileGrid : GraphicsView, IDrawable
 {
+    public static readonly BindableProperty CompletedCommandProperty =
+    BindableProperty.Create(nameof(CompletedCommand), typeof(ICommand), typeof(SlidingTileGrid));
+
+    public ICommand CompletedCommand
+    {
+        get => (ICommand)GetValue(CompletedCommandProperty);
+        set => SetValue(CompletedCommandProperty, value);
+    }
     private Microsoft.Maui.Graphics.IImage image;
     private float imageHeight;
     private float imageWidth;
@@ -75,6 +84,7 @@ public partial class SlidingTileGrid : GraphicsView, IDrawable
     protected override void OnSizeAllocated(double width, double height)
     {
         base.OnSizeAllocated(width, height);
+        System.Diagnostics.Debug.WriteLine($"SlidingTileGrid sized: {width}x{height} and level image is {this.Level.ImageName}");
 
         if (this.Level is not null)
         {
@@ -177,6 +187,7 @@ public partial class SlidingTileGrid : GraphicsView, IDrawable
 
     private void MoveTile(Tile matchingTile, bool checkForCompletion, bool animateMovement)
     {
+        System.Diagnostics.Debug.WriteLine($"Attempting to move tile at {matchingTile.CurrentPosition.X},{matchingTile.CurrentPosition.Y}");
         var distance = this.emptyTile.CurrentPosition.Distance(matchingTile.CurrentPosition);
 
         if (distance == 1)
@@ -214,9 +225,18 @@ public partial class SlidingTileGrid : GraphicsView, IDrawable
                     length: 250,
                     finished: (v, d) =>
                     {
+                        /*if (checkForCompletion && this.tiles.All(t => t.CurrentPosition == t.DestinationPosition))
+                        {
+                            this.Completed?.Invoke(this, EventArgs.Empty);
+                        }*/
                         if (checkForCompletion && this.tiles.All(t => t.CurrentPosition == t.DestinationPosition))
                         {
                             this.Completed?.Invoke(this, EventArgs.Empty);
+
+                            if (CompletedCommand?.CanExecute(null) == true)
+                            {
+                                CompletedCommand.Execute(null);
+                            }
                         }
                     });
             }
@@ -236,7 +256,7 @@ public partial class SlidingTileGrid : GraphicsView, IDrawable
 
     public void Draw(ICanvas canvas, RectF dirtyRect)
     {
-        foreach (var tile in this.tiles)
+        foreach (Tile tile in this.tiles)
         {
             // Save and then reset the state of the canvas ahead of allowing a tile to draw.
             canvas.SaveState();
@@ -250,7 +270,7 @@ public partial class SlidingTileGrid : GraphicsView, IDrawable
         }
     }
 
-    protected Microsoft.Maui.Graphics.IImage LoadImage(string imageName)
+    public Microsoft.Maui.Graphics.IImage LoadImage(string imageName)
     {
         var assembly = GetType().GetTypeInfo().Assembly;
 

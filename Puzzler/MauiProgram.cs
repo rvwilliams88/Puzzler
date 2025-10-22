@@ -1,5 +1,5 @@
 ﻿using Microsoft.Extensions.Logging;
-using Puzzler.Pages;
+using Puzzler.Views;
 
 namespace Puzzler;
 
@@ -23,7 +23,7 @@ public static class MauiProgram
 #endif
 
         // Register the data layer.
-        builder.Services.AddSingleton<Context>();
+        //builder.Services.AddSingleton<Context>();
 
         // Register the pages.
         builder.Services.AddTransient<LevelPage>();
